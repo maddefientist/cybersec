@@ -1,0 +1,77 @@
+Apply filters to SQL queries
+
+Project description
+My organization is working to make their system more secure. It is my job to ensure the system is safe, investigate all potential security issues, and update employee computers as needed. Here's how I used SQL with filters to perform security-related tasks.
+
+Retrieve after-hours failed login attempts
+
+Scenario: A potential security incident occurred after business hours (after 18:00). All after-hours login attempts that failed need to be investigated.
+
+SQL Query:
+
+SQL
+SELECT * 
+FROM log_in_attempts 
+WHERE login_time > '18:00' 
+  AND success = 'FALSE';
+Use code with caution.
+Sample Output:
+
+username	login_time	success	ip_address
+jsmith	2022-03-30 20:12	FALSE	125.212.35.78
+baduser12	2022-03-30 19:45	FALSE	201.78.22.103
+guest	2022-03-30 18:03	FALSE	192.168.1.150
+Retrieve login attempts on specific dates
+
+Scenario: A suspicious event occurred on 2022-05-09. Any login activity that happened on 2022-05-09 or the day before needs to be investigated.
+
+SQL Query:
+
+SQL
+SELECT * 
+FROM log_in_attempts 
+WHERE login_date = '2022-05-09' 
+   OR login_date = '2022-05-08';
+Use code with caution.
+Sample Output:
+
+username	login_time	success	ip_address	login_date
+mkang	2022-05-08 16:41	TRUE	192.168.5.23	2022-05-08
+jdoe	2022-05-09 08:55	TRUE	10.20.44.12	2022-05-09
+jdoe	2022-05-09 09:03	FALSE	10.20.44.12	2022-05-09
+Retrieve login attempts outside of Mexico
+
+Scenario:  Abnormal login activity is suspected from locations outside of Mexico.
+
+SQL Query:
+
+SQL
+SELECT * 
+FROM log_in_attempts 
+WHERE country NOT LIKE 'MEX%';
+Use code with caution.
+Sample Output:
+
+username	login_time	success	ip_address	country
+rpatel	2022-03-30 11:15	TRUE	87.120.43.120	India
+xyang	2022-03-29 23:50	FALSE	210.96.188.45	China
+Retrieve employees in other departments (for targeted updates)
+
+Scenarios: You need to update computers for employees in specific departments (Marketing, Finance, Sales, and those not in IT)
+
+I'll provide one combined example, as the queries are similar:
+
+SQL Query:
+
+SQL
+SELECT * 
+FROM employees 
+WHERE department IN ('Marketing', 'Finance', 'Sales') 
+    OR department NOT IN ('IT');  
+Use code with caution.
+Sample Output:
+
+employee_id	first_name	last_name	department	office
+105	Sarah	Johnson	Marketing	East 201
+221	Roberto	Gomez	Finance	West 115
+45	Emily	Li	Sales	East 305
